@@ -37,3 +37,10 @@ img {
 .form-control::placeholder {
   color: #bbb !important;
 }
+
+.single-news:hover {
+  -webkit-transform: rotate(-5deg);
+  -moz-transform: rotate(-5deg);
+  -o-transform: rotate(-5deg);
+  transform: rotate(-5deg);
+}
