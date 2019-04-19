@@ -7,6 +7,7 @@ import Landing from './components/layout/Landing';
 import Register from './components/auth/Register';
 import Login from './components/auth/Login';
 import Home from './components/Home';
+import Newslist from './components/sections/Newslist';
 
 import './App.css';
 
@@ -14,12 +15,14 @@ class App extends Component {
   render() {
     return (
       <Router>
-        <div className="App">
+        <div className='App'>
           <Navbar />
-          <Route exact path="/" component={Home} />
-          <div className="container">
-            <Route exact path="/register" component={Register} />
-            <Route exact path="/login" component={Login} />
+          <Route exact path='/' component={Landing} />
+          <Route exact path='/home' component={Home} />
+          <div className='container'>
+            <Route exact path='/register' component={Register} />
+            <Route exact path='/login' component={Login} />
+            <Route exact path='/newslist' component={Newslist} />
           </div>
           <Footer />
         </div>
