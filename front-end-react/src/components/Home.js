@@ -17,9 +17,15 @@ class Home extends Component {
     axios.get('/forum-post/all').then(res => {
       const postList = [];
       for (var i = 0; i < 5; i++) {
+        const postPath = {
+          pathname: '/post',
+          state: res['data'][i]['PostID']
+        };
         postList.push(
           <li className='list-group-item list-group-item-info single-news'>
-            <h4>{res['data'][i]['Title']}</h4>
+            <Link className='link-type text-info' to={postPath}>
+              <h4>{res['data'][i]['Title']}</h4>
+            </Link>
           </li>
         );
       }
@@ -35,7 +41,7 @@ class Home extends Component {
             <div className='row'>
               <div className='col-md-4'>
                 <h3 className='text-center text-muted'>
-                  <Link className='news-title' to='/newslist'>
+                  <Link className='link-type' to='/newslist'>
                     Columbia News
                   </Link>
                 </h3>
@@ -43,7 +49,7 @@ class Home extends Component {
               </div>
               <div className='col-md-4'>
                 <h3 className='text-center text-muted'>
-                  <Link className='news-title' to='/posts'>
+                  <Link className='link-type' to='/posts'>
                     Daily Life
                   </Link>
                 </h3>
@@ -51,7 +57,7 @@ class Home extends Component {
               </div>
               <div className='col-md-4'>
                 <h3 className='text-center text-muted'>
-                  <Link className='news-title' to='/'>
+                  <Link className='link-type' to='/'>
                     Job Hunting
                   </Link>
                 </h3>
