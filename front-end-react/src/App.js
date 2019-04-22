@@ -9,6 +9,7 @@ import Login from './components/auth/Login';
 import Home from './components/Home';
 import Newslist from './components/sections/Newslist';
 import Posts from './components/sections/Posts';
+import Post from './components/sections/Post';
 
 import './App.css';
 
@@ -16,15 +17,16 @@ class App extends Component {
   render() {
     return (
       <Router>
-        <div className="App">
+        <div className='App'>
           <Navbar />
-          <Route exact path="/" component={Landing} />
-          <Route exact path="/home" component={Home} />
-          <div className="container">
-            <Route exact path="/register" component={Register} />
-            <Route exact path="/login" component={Login} />
-            <Route exact path="/newslist" component={Newslist} />
-            <Route exact path="/posts" component={Posts} />
+          <Route exact path='/' component={Landing} />
+          <Route exact path='/home' component={Home} />
+          <div className='container'>
+            <Route exact path='/register' component={Register} />
+            <Route exact path='/login' component={Login} />
+            <Route exact path='/newslist' component={Newslist} />
+            <Route exact path='/posts' component={Posts} />
+            <Route exact path='/post' component={Post} />
           </div>
           <Footer />
         </div>

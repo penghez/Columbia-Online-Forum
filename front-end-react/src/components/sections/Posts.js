@@ -14,27 +14,31 @@ class Posts extends Component {
   componentDidMount() {
     axios.get('/forum-post/all').then(res => {
       console.log(res.data);
-      const newsContent = res.data;
+      const newsContent = res['data'];
 
       const newsContentElements = [];
       for (let n of newsContent) {
+        const postPath = {
+          pathname: '/post',
+          state: n['PostID']
+        };
         newsContentElements.push(
-          <div className="card card-body mb-3" key={n['PostID']}>
-            <div className="row">
-              <div className="col-md-2">
-                <Link to="/home">
+          <div className='card card-body mb-3' key={n['PostID']}>
+            <div className='row'>
+              <div className='col-md-2'>
+                <Link to={postPath}>
                   <img
-                    className="rounded-circle d-none d-md-block"
-                    alt=""
-                    src="https://www.gravatar.com/avatar/anything?s=200&d=mm"
+                    className='rounded-circle d-none d-md-block'
+                    alt=''
+                    src='https://www.gravatar.com/avatar/anything?s=200&d=mm'
                   />
                 </Link>
                 <br />
-                <p className="text-center">{n['PostID']}</p>
+                <p className='text-center'>{n['PostID']}</p>
               </div>
-              <div className="col-md-10">
-                <Link to="/home">
-                  <p className="lead">{n['Title']}</p>
+              <div className='col-md-10'>
+                <Link to={postPath}>
+                  <p className='lead'>{n['Title']}</p>
                   <p>{n['Content']}</p>
                 </Link>
               </div>
@@ -48,36 +52,36 @@ class Posts extends Component {
 
   render() {
     return (
-      <div className="row">
-        <div className="col-md-12">
-          <div className="post-form mb-3">
-            <div className="card card-info">
-              <div className="card-header bg-info text-white">
+      <div className='row'>
+        <div className='col-md-12'>
+          <div className='post-form mb-3'>
+            <div className='card card-info'>
+              <div className='card-header bg-info text-white'>
                 Say Something...
               </div>
-              <div className="card-body">
+              <div className='card-body'>
                 <form>
-                  <div className="form-group">
+                  <div className='form-group'>
                     <textarea
-                      className="form-control"
-                      rows="1"
-                      placeholder="Create the title"
+                      className='form-control'
+                      rows='1'
+                      placeholder='Create the title'
                     />
                     <br />
                     <textarea
-                      className="form-control"
-                      rows="5"
-                      placeholder="Create a post"
+                      className='form-control'
+                      rows='5'
+                      placeholder='Create a post'
                     />
                   </div>
-                  <button type="submit" className="btn btn-dark">
+                  <button type='submit' className='btn btn-dark'>
                     Submit
                   </button>
                 </form>
               </div>
             </div>
           </div>
-          <div className="posts">{this.state.newsContentElements}</div>
+          <div className='posts'>{this.state.newsContentElements}</div>
         </div>
       </div>
     );
