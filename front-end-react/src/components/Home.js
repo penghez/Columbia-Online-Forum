@@ -22,7 +22,9 @@ class Home extends Component {
           state: res['data'][i]['PostID']
         };
         postList.push(
-          <li className='list-group-item list-group-item-info single-news'>
+          <li
+            className='list-group-item list-group-item-info single-news'
+            key={res['data'][i]['PostID']}>
             <Link className='link-type text-info' to={postPath}>
               <h4>{res['data'][i]['Title']}</h4>
             </Link>

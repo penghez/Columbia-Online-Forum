@@ -1,15 +1,48 @@
 import React, { Component } from 'react';
+import axios from 'axios';
+import { Auth } from 'aws-amplify';
 
 class Login extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+    console.log(super());
+    console.log(this);
+
     this.state = {
-      email: '',
+      username: '',
       password: '',
-      errors: {}
+      error: ''
     };
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.signIn = this.signIn.bind(this);
+    this.confirmSignIn = this.confirmSignIn.bind(this);
+  }
+
+  signIn() {
+    const { username, password } = this.state;
+    Auth.signIn({
+      username: username,
+      password: password
+    })
+      .then(() => {
+        console.log('Successfully signed in');
+        this.props.history.push('/home');
+      })
+      .catch(err => {
+        this.setState({ error: err['message'] });
+        console.log(err);
+      });
+  }
+
+  confirmSignIn() {
+    const { username } = this.state;
+    Auth.confirmSignIn(username)
+      .then(() => {
+        console.log('Successfully confirmed signed in');
+        this.props.handleSignUp(this.state);
+      })
+      .catch(err => console.log(err));
   }
 
   onChange(e) {
@@ -19,15 +52,17 @@ class Login extends Component {
   onSubmit(e) {
     e.preventDefault();
 
-    const user = {
-      email: this.state.email,
-      password: this.state.password
-    };
-
-    console.log(user);
+    this.signIn();
+    //  this.confirmSignIn();
+    this.setState({
+      username: '',
+      password: ''
+    });
+    e.target.reset();
   }
 
   render() {
+    const { error } = this.state;
     return (
       <div className='login'>
         <div className='container'>
@@ -37,14 +72,18 @@ class Login extends Component {
               <p className='lead text-center'>
                 Sign in to your Columbia Forum account
               </p>
+              <p className='text-center text-muted'>
+                Authenticated by AWS Cognito and Amplify
+              </p>
+              <p className='text-center text-danger'>{error}</p>
               <form onSubmit={this.onSubmit}>
                 <div className='form-group'>
                   <input
-                    type='email'
+                    type='text'
                     className='form-control form-control-lg'
-                    placeholder='Email Address'
-                    name='email'
-                    value={this.state.email}
+                    placeholder='Name'
+                    name='username'
+                    value={this.state.username}
                     onChange={this.onChange}
                   />
                 </div>

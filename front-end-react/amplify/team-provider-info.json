@@ -1,0 +1,19 @@
+{
+    "reactforum": {
+        "awscloudformation": {
+            "AuthRoleName": "front-end-react-20190422162241-authRole",
+            "UnauthRoleArn": "arn:aws:iam::514075886682:role/front-end-react-20190422162241-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::514075886682:role/front-end-react-20190422162241-authRole",
+            "Region": "us-east-2",
+            "DeploymentBucketName": "front-end-react-20190422162241-deployment",
+            "UnauthRoleName": "front-end-react-20190422162241-unauthRole",
+            "StackName": "front-end-react-20190422162241",
+            "StackId": "arn:aws:cloudformation:us-east-2:514075886682:stack/front-end-react-20190422162241/62367510-653c-11e9-8055-020cf0d94894"
+        },
+        "categories": {
+            "auth": {
+                "cognitof59b626e": {}
+            }
+        }
+    }
+}

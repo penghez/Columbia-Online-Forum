@@ -1,19 +1,60 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import classnames from 'classnames';
+import { Auth } from 'aws-amplify';
 
 class Register extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+
     this.state = {
-      name: '',
+      username: '',
       email: '',
       password: '',
-      password2: '',
-      errors: {}
+      phoneNumber: '',
+      confirmationCode: '',
+      error: '',
+      verified: false
     };
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.signUp = this.signUp.bind(this);
+    this.confirmSignUp = this.confirmSignUp.bind(this);
+  }
+
+  signUp() {
+    const { username, password, email, phoneNumber } = this.state;
+    console.log(this.state);
+    Auth.signUp({
+      username: username,
+      password: password,
+      attributes: {
+        email: email,
+        phone_number: phoneNumber
+      }
+    })
+      .then(() => {
+        console.log('Successfully signed up');
+        this.setState({ error: '' });
+      })
+      .catch(err => {
+        this.setState({ error: err['message'] });
+        console.log(err);
+      });
+  }
+
+  confirmSignUp() {
+    const { username, confirmationCode } = this.state;
+    Auth.confirmSignUp(username, confirmationCode)
+      .then(() => {
+        console.log('Successfully confirmed signed up');
+        this.setState({ error: '' });
+        this.props.handleSignUp(this.state);
+        this.props.history.push('/home');
+      })
+      .catch(err => {
+        this.setState({ error: err['message'] });
+        console.log(err);
+      });
   }
 
   onChange(e) {
@@ -21,102 +62,144 @@ class Register extends Component {
   }
 
   onSubmit(e) {
+    const { verified, error } = this.state;
+
     e.preventDefault();
 
-    const newUser = {
-      name: this.state.name,
-      email: this.state.email,
-      password: this.state.password,
-      password2: this.state.password2
-    };
+    if (error == '' && verified) {
+      this.confirmSignUp();
+      this.setState({
+        confirmationCode: '',
+        username: ''
+      });
+    } else {
+      this.signUp();
+      this.setState({
+        password: '',
+        email: '',
+        phoneNumber: '',
+        verified: true
+      });
+    }
 
-    axios
-      .post('/api/users/register', newUser)
-      .then(res => console.log(res.data))
-      .catch(err => this.setState({ errors: err.response.data }));
+    e.target.reset();
   }
 
   render() {
-    // the same as 'const errors = this.state.errors'
-    const { errors } = this.state;
+    const { verified, error } = this.state;
 
-    return (
-      <div className='register'>
-        <div className='container'>
-          <div className='row'>
-            <div className='col-md-8 m-auto'>
-              <h1 className='display-4 text-center'>Sign Up</h1>
-              <p className='lead text-center'>
-                Create your Columbia Forum account
-              </p>
-              <form onSubmit={this.onSubmit}>
-                <div className='form-group'>
+    if (error == '' && verified) {
+      return (
+        <div className='register'>
+          <div className='container'>
+            <div className='row'>
+              <div className='col-md-8 m-auto'>
+                <h1 className='display-4 text-center'>Sign Up</h1>
+                <p className='lead text-center'>
+                  Create your Columbia Forum account
+                </p>
+                <p className='text-center text-muted'>
+                  Authenticated by AWS Cognito and Amplify
+                </p>
+
+                <form onSubmit={this.onSubmit}>
+                  <div className='form-group'>
+                    <input
+                      type='text'
+                      className='form-control form-control-lg'
+                      placeholder={this.state.username}
+                      name='username'
+                      value={this.state.username}
+                      onChange={this.onChange}
+                    />
+                  </div>
+                  <div className='form-group'>
+                    <input
+                      type='text'
+                      className='form-control form-control-lg'
+                      placeholder='Confirmation Code'
+                      name='confirmationCode'
+                      value={this.state.confirmationCode}
+                      onChange={this.onChange}
+                    />
+                  </div>
                   <input
-                    type='text'
-                    className={classnames('form-control form-control-lg', {
-                      'is-invalid': errors.name
-                    })}
-                    placeholder='Name'
-                    name='name'
-                    value={this.state.name}
-                    onChange={this.onChange}
+                    type='submit'
+                    className='btn btn-info btn-block mt-4'
                   />
-                  {errors.name && (
-                    <div className='invalid-feedback'>{errors.name}</div>
-                  )}
-                </div>
-                <div className='form-group'>
-                  <input
-                    type='email'
-                    className={classnames('form-control form-control-lg', {
-                      'is-invalid': errors.email
-                    })}
-                    placeholder='Email Address'
-                    name='email'
-                    value={this.state.email}
-                    onChange={this.onChange}
-                  />
-                  {errors.email && (
-                    <div className='invalid-feedback'>{errors.email}</div>
-                  )}
-                </div>
-                <div className='form-group'>
-                  <input
-                    type='password'
-                    className={classnames('form-control form-control-lg', {
-                      'is-invalid': errors.password
-                    })}
-                    placeholder='Password'
-                    name='password'
-                    value={this.state.password}
-                    onChange={this.onChange}
-                  />
-                  {errors.password && (
-                    <div className='invalid-feedback'>{errors.password}</div>
-                  )}
-                </div>
-                <div className='form-group'>
-                  <input
-                    type='password'
-                    className={classnames('form-control form-control-lg', {
-                      'is-invalid': errors.password2
-                    })}
-                    placeholder='Confirm Password'
-                    name='password2'
-                    value={this.state.password2}
-                    onChange={this.onChange}
-                  />
-                  {errors.password2 && (
-                    <div className='invalid-feedback'>{errors.password2}</div>
-                  )}
-                </div>
-                <input type='submit' className='btn btn-info btn-block mt-4' />
-              </form>
+                </form>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    );
+      );
+    } else {
+      return (
+        <div className='register'>
+          <div className='container'>
+            <div className='row'>
+              <div className='col-md-8 m-auto'>
+                <h1 className='display-4 text-center'>Sign Up</h1>
+                <p className='lead text-center'>
+                  Create your Columbia Forum account
+                </p>
+                <p className='text-center text-muted'>
+                  Authenticated by AWS Cognito and Amplify
+                </p>
+                <p className='text-center text-danger'>{error}</p>
+                <form onSubmit={this.onSubmit}>
+                  <div className='form-group'>
+                    <input
+                      type='text'
+                      className='form-control form-control-lg'
+                      placeholder='Name'
+                      name='username'
+                      value={this.state.username}
+                      onChange={this.onChange}
+                    />
+                  </div>
+                  <div className='form-group'>
+                    <input
+                      type='email'
+                      className='form-control form-control-lg'
+                      placeholder='Email Address'
+                      name='email'
+                      value={this.state.email}
+                      onChange={this.onChange}
+                    />
+                  </div>
+                  <div className='form-group'>
+                    <input
+                      type='password'
+                      className='form-control form-control-lg'
+                      placeholder='Password'
+                      name='password'
+                      value={this.state.password}
+                      onChange={this.onChange}
+                    />
+                  </div>
+                  <div className='form-group'>
+                    <input
+                      type='text'
+                      className='form-control form-control-lg'
+                      data-format='+1 (ddd) ddd-dddd'
+                      placeholder='Phone number'
+                      name='phoneNumber'
+                      value={this.state.phoneNumber}
+                      onChange={this.onChange}
+                    />
+                  </div>
+                  <input
+                    type='submit'
+                    className='btn btn-info btn-block mt-4'
+                  />
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
   }
 }
 

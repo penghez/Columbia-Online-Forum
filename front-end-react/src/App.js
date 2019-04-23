@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
+import Amplify from 'aws-amplify';
+import awsexports from './aws-exports';
+
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
 import Landing from './components/layout/Landing';
@@ -13,7 +16,27 @@ import Post from './components/sections/Post';
 
 import './App.css';
 
+Amplify.configure(awsexports);
+
 class App extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      signedIn: false,
+      userInfo: {}
+    };
+    this.handleSignUp = this.handleSignUp.bind(this);
+  }
+
+  handleSignUp(userInfo) {
+    this.setState({
+      signedIn: true,
+      userInfo: userInfo
+    });
+    console.log(this.state);
+  }
+
   render() {
     return (
       <Router>
