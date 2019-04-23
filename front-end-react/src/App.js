@@ -6,6 +6,8 @@ import store from './store';
 import Amplify from 'aws-amplify';
 import awsexports from './aws-exports';
 
+import { setCurrentUser } from './actions/authActions';
+
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
 import Landing from './components/layout/Landing';
@@ -19,6 +21,11 @@ import Post from './components/sections/Post';
 import './App.css';
 
 Amplify.configure(awsexports);
+
+if (localStorage.currentUserName) {
+  store.dispatch(setCurrentUser({ username: localStorage.currentUserName }));
+}
+// window.location.href = 'login';
 
 class App extends Component {
   constructor(props) {

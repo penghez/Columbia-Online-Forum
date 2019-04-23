@@ -37,7 +37,7 @@ export const loginUser = userData => dispatch => {
   Auth.signIn(userData)
     .then(res => {
       // Save to store
-      const { username } = res.username;
+      const username = res.username;
       localStorage.setItem('currentUserName', username);
 
       // Set current user
@@ -53,9 +53,18 @@ export const loginUser = userData => dispatch => {
 };
 
 // Set logged in user
-export const setCurrentUser = userDate => {
+export const setCurrentUser = userData => {
   return {
     type: SET_CURRENT_USER,
-    payload: userDate
+    payload: userData
   };
+};
+
+// Log out
+export const logoutUser = () => dispatch => {
+  localStorage.removeItem('currentUserName');
+  Auth.signOut()
+    .then()
+    .catch(err => console.log(err));
+  dispatch(setCurrentUser({}));
 };
