@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import axios from 'axios';
-import { Auth } from 'aws-amplify';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { loginUser } from '../../actions/authActions';
 
 class Login extends Component {
   constructor(props) {
     super(props);
-    console.log(super());
-    console.log(this);
 
     this.state = {
       username: '',
@@ -15,34 +14,15 @@ class Login extends Component {
     };
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
-    this.signIn = this.signIn.bind(this);
-    this.confirmSignIn = this.confirmSignIn.bind(this);
   }
 
-  signIn() {
-    const { username, password } = this.state;
-    Auth.signIn({
-      username: username,
-      password: password
-    })
-      .then(() => {
-        console.log('Successfully signed in');
-        this.props.history.push('/home');
-      })
-      .catch(err => {
-        this.setState({ error: err['message'] });
-        console.log(err);
-      });
-  }
-
-  confirmSignIn() {
-    const { username } = this.state;
-    Auth.confirmSignIn(username)
-      .then(() => {
-        console.log('Successfully confirmed signed in');
-        this.props.handleSignUp(this.state);
-      })
-      .catch(err => console.log(err));
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.auth.isAuthenticated) {
+      this.props.history.push('/home');
+    }
+    if (nextProps.error) {
+      this.setState({ error: nextProps.error['message'] });
+    }
   }
 
   onChange(e) {
@@ -51,9 +31,11 @@ class Login extends Component {
 
   onSubmit(e) {
     e.preventDefault();
-
-    this.signIn();
-    //  this.confirmSignIn();
+    const user = {
+      username: this.state.username,
+      password: this.state.password
+    };
+    this.props.loginUser(user);
     this.setState({
       username: '',
       password: ''
@@ -62,7 +44,6 @@ class Login extends Component {
   }
 
   render() {
-    const { error } = this.state;
     return (
       <div className='login'>
         <div className='container'>
@@ -75,7 +56,6 @@ class Login extends Component {
               <p className='text-center text-muted'>
                 Authenticated by AWS Cognito and Amplify
               </p>
-              <p className='text-center text-danger'>{error}</p>
               <form onSubmit={this.onSubmit}>
                 <div className='form-group'>
                   <input
@@ -107,4 +87,18 @@ class Login extends Component {
   }
 }
 
-export default Login;
+Login.propTypes = {
+  loginUser: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
+  error: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+  auth: state.auth,
+  error: state.error
+});
+
+export default connect(
+  mapStateToProps,
+  { loginUser }
+)(Login);

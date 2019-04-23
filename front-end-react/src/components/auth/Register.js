@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import axios from 'axios';
-import { Auth } from 'aws-amplify';
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { registerUser, confirmRegister } from '../../actions/authActions';
 
 class Register extends Component {
   constructor(props) {
@@ -17,44 +19,12 @@ class Register extends Component {
     };
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
-    this.signUp = this.signUp.bind(this);
-    this.confirmSignUp = this.confirmSignUp.bind(this);
   }
 
-  signUp() {
-    const { username, password, email, phoneNumber } = this.state;
-    console.log(this.state);
-    Auth.signUp({
-      username: username,
-      password: password,
-      attributes: {
-        email: email,
-        phone_number: phoneNumber
-      }
-    })
-      .then(() => {
-        console.log('Successfully signed up');
-        this.setState({ error: '' });
-      })
-      .catch(err => {
-        this.setState({ error: err['message'] });
-        console.log(err);
-      });
-  }
-
-  confirmSignUp() {
-    const { username, confirmationCode } = this.state;
-    Auth.confirmSignUp(username, confirmationCode)
-      .then(() => {
-        console.log('Successfully confirmed signed up');
-        this.setState({ error: '' });
-        this.props.handleSignUp(this.state);
-        this.props.history.push('/home');
-      })
-      .catch(err => {
-        this.setState({ error: err['message'] });
-        console.log(err);
-      });
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.error) {
+      this.setState({ error: nextProps.error['message'] });
+    }
   }
 
   onChange(e) {
@@ -66,14 +36,26 @@ class Register extends Component {
 
     e.preventDefault();
 
-    if (error == '' && verified) {
-      this.confirmSignUp();
+    if (error === '' && verified) {
+      const confirmUser = {
+        username: this.state.username,
+        code: this.state.confirmationCode
+      };
+      this.props.confirmRegister(confirmUser, this.props.history);
       this.setState({
-        confirmationCode: '',
-        username: ''
+        confirmationCode: ''
       });
     } else {
-      this.signUp();
+      const newUser = {
+        username: this.state.username,
+        password: this.state.password,
+        attributes: {
+          phone_number: this.state.phoneNumber,
+          email: this.state.email
+        }
+      };
+
+      this.props.registerUser(newUser);
       this.setState({
         password: '',
         email: '',
@@ -88,7 +70,7 @@ class Register extends Component {
   render() {
     const { verified, error } = this.state;
 
-    if (error == '' && verified) {
+    if (error === '' && verified) {
       return (
         <div className='register'>
           <div className='container'>
@@ -101,7 +83,6 @@ class Register extends Component {
                 <p className='text-center text-muted'>
                   Authenticated by AWS Cognito and Amplify
                 </p>
-
                 <form onSubmit={this.onSubmit}>
                   <div className='form-group'>
                     <input
@@ -203,4 +184,18 @@ class Register extends Component {
   }
 }
 
-export default Register;
+Register.propTypes = {
+  registerUser: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
+  error: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+  auth: state.auth,
+  error: state.error
+});
+
+export default connect(
+  mapStateToProps,
+  { registerUser, confirmRegister }
+)(withRouter(Register));
