@@ -29,7 +29,10 @@ class Register extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.error) {
-      this.setState({ error: nextProps.error['message'] });
+      this.setState({
+        error: nextProps.error['message'],
+        verified: false
+      });
     }
   }
 
@@ -38,11 +41,11 @@ class Register extends Component {
   }
 
   onSubmit(e) {
-    const { verified, error } = this.state;
+    const { verified } = this.state;
 
     e.preventDefault();
 
-    if (error === '' && verified) {
+    if (verified) {
       const confirmUser = {
         username: this.state.username,
         code: this.state.confirmationCode
@@ -76,7 +79,7 @@ class Register extends Component {
   render() {
     const { verified, error } = this.state;
 
-    if (error === '' && verified) {
+    if (verified) {
       return (
         <div className='register'>
           <div className='container'>
