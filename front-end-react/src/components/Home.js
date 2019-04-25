@@ -52,6 +52,7 @@ class Home extends Component {
                     Columbia News
                   </Link>
                 </h3>
+                <br />
                 <ul className='list-group'>{this.state.newsList}</ul>
               </div>
               <div className='col-md-4'>
@@ -60,6 +61,7 @@ class Home extends Component {
                     Daily Life
                   </Link>
                 </h3>
+                <br />
                 <ul className='list-group'>{this.state.postList}</ul>
               </div>
               <div className='col-md-4'>
@@ -68,6 +70,7 @@ class Home extends Component {
                     Job Hunting
                   </Link>
                 </h3>
+                <br />
                 <ul className='list-group'>{this.state.jobList}</ul>
               </div>
             </div>

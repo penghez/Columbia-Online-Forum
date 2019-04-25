@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { Modal, Button } from 'react-bootstrap';
 
 class Post extends Component {
   constructor() {
@@ -9,11 +10,23 @@ class Post extends Component {
     this.state = {
       commentElements: [],
       postBody: {},
-      cpContent: ''
+      cpContent: '',
+      showModal: false,
+      rcReplyTo: '',
+      rcContent: ''
     };
     // Comment on Post
     this.cpChange = this.cpChange.bind(this);
     this.cpSubmit = this.cpSubmit.bind(this);
+
+    // Reply to Comment
+    this.rcChange = this.rcChange.bind(this);
+    this.rcSubmit = this.rcSubmit.bind(this);
+
+    this.showModal = this.showModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
+
+    // Reply to Comment
     this.getAllPostData = this.getAllPostData.bind(this);
   }
 
@@ -49,9 +62,49 @@ class Post extends Component {
       .catch(err => console.log(err));
   }
 
+  rcChange(e) {
+    this.setState({ [e.target.name]: e.target.value });
+  }
+
+  rcSubmit(e) {
+    e.preventDefault();
+
+    const rcBody = {
+      Author: localStorage.currentUserName,
+      Content: this.state.rcContent,
+      ReplyTo: this.state.rcReplyTo
+    };
+
+    axios
+      .post('/forum-post/comment', {
+        PostID: this.state.postBody['PostID'],
+        Comment: rcBody
+      })
+      .then(res => {
+        console.log(res);
+        this.setState({
+          rcContent: '',
+          rcReplyTo: ''
+        });
+        this.getAllPostData();
+      })
+      .catch(err => console.log(err));
+  }
+
+  showModal(e) {
+    this.setState({
+      showModal: true,
+      rcReplyTo: e.target.value
+    });
+  }
+
+  closeModal() {
+    this.setState({ showModal: false });
+  }
+
   getAllPostData() {
     const currentPostID = this.props.location.state;
-    console.log(currentPostID);
+    // console.log(currentPostID);
 
     axios
       .get('/forum-post', {
@@ -62,7 +115,7 @@ class Post extends Component {
       .then(res => {
         const postBody = res['data'];
         this.setState({ postBody });
-        console.log(this.state);
+        // console.log(this.state);
 
         const comments = postBody['Comment'];
         const commentElements = [];
@@ -84,6 +137,13 @@ class Post extends Component {
                 <div className='col-md-10'>
                   <p className='text-muted'>Reply to: {n['ReplyTo']}</p>
                   <p>{n['Content']}</p>
+
+                  <Button
+                    variant='secondary'
+                    value={n['Author']}
+                    onClick={this.showModal}>
+                    Reply
+                  </Button>
                 </div>
               </div>
             </div>
@@ -126,8 +186,38 @@ class Post extends Component {
           {this.state.commentElements !== 0 && (
             <div className='comments'>{this.state.commentElements}</div>
           )}
-          {/* <div className='card-header bg-success text-white'>Comments</div>
-          <div className='comments'>{this.state.commentElements}</div> */}
+
+          <Modal show={this.state.showModal} onHide={this.closeModal}>
+            <Modal.Header closeButton>
+              <Modal.Title>Reply to {this.state.rcReplyTo}</Modal.Title>
+            </Modal.Header>
+            <form onSubmit={this.rcSubmit}>
+              <Modal.Body>
+                <div className='form-group'>
+                  <textarea
+                    className='form-control'
+                    rows='6'
+                    placeholder='Create your reply'
+                    name='rcContent'
+                    value={this.state.rcContent}
+                    onChange={this.rcChange}
+                  />
+                </div>
+              </Modal.Body>
+              <Modal.Footer>
+                <Button variant='secondary' onClick={this.closeModal}>
+                  Close
+                </Button>
+                <Button
+                  variant='primary'
+                  type='submit'
+                  value='Submit'
+                  onClick={this.closeModal}>
+                  Reply
+                </Button>
+              </Modal.Footer>
+            </form>
+          </Modal>
 
           <div>
             <div className='post-form mb-3'>
@@ -139,7 +229,8 @@ class Post extends Component {
                   <form onSubmit={this.cpSubmit}>
                     <div className='form-group'>
                       <textarea
-                        className='form-control form-control'
+                        className='form-control'
+                        rows='5'
                         placeholder='Create a post'
                         name='cpContent'
                         value={this.state.cpContent}
