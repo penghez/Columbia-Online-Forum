@@ -21,7 +21,7 @@ class Home extends Component {
 
     axios.get('/forum-post/all').then(res => {
       const postList = [];
-      for (var i = 0; i < 5; i++) {
+      for (var i = 0; i < 6; i++) {
         const postPath = {
           pathname: '/post',
           state: res['data'][i]['PostID']

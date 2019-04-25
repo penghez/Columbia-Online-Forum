@@ -7,7 +7,7 @@ class Posts extends Component {
     super();
 
     this.state = {
-      newsContentElements: [],
+      postsContentElements: [],
       title: '',
       content: ''
     };
@@ -46,15 +46,15 @@ class Posts extends Component {
 
   getAllPosts() {
     axios.get('/forum-post/all').then(res => {
-      const newsContent = res['data'];
+      const postsContent = res['data'];
 
-      const newsContentElements = [];
-      for (let n of newsContent) {
+      const postsContentElements = [];
+      for (let n of postsContent) {
         const postPath = {
           pathname: '/post',
           state: n['PostID']
         };
-        newsContentElements.push(
+        postsContentElements.push(
           <div className='card card-body mb-3' key={n['PostID']}>
             <div className='row'>
               <div className='col-md-2'>
@@ -78,7 +78,7 @@ class Posts extends Component {
           </div>
         );
       }
-      this.setState({ newsContentElements });
+      this.setState({ postsContentElements });
     });
   }
 
@@ -119,7 +119,7 @@ class Posts extends Component {
               </div>
             </div>
           </div>
-          <div className='posts'>{this.state.newsContentElements}</div>
+          <div className='posts'>{this.state.postsContentElements}</div>
         </div>
       </div>
     );
