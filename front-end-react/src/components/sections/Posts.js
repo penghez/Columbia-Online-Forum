@@ -7,13 +7,45 @@ class Posts extends Component {
     super();
 
     this.state = {
-      newsContentElements: []
+      newsContentElements: [],
+      title: '',
+      content: ''
     };
+    this.onChange = this.onChange.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
+    this.getAllPosts = this.getAllPosts.bind(this);
   }
 
   componentDidMount() {
+    this.getAllPosts();
+  }
+
+  onChange(e) {
+    this.setState({ [e.target.name]: e.target.value });
+  }
+
+  onSubmit(e) {
+    e.preventDefault();
+
+    axios
+      .post('/forum-post', {
+        Title: this.state.title,
+        Content: this.state.content,
+        Author: localStorage.currentUserName
+      })
+      .then(res => {
+        console.log(res);
+        this.setState({
+          title: '',
+          content: ''
+        });
+        this.getAllPosts();
+      })
+      .catch(err => console.log(err));
+  }
+
+  getAllPosts() {
     axios.get('/forum-post/all').then(res => {
-      console.log(res.data);
       const newsContent = res['data'];
 
       const newsContentElements = [];
@@ -34,7 +66,7 @@ class Posts extends Component {
                   />
                 </Link>
                 <br />
-                <p className='text-center'>{n['PostID']}</p>
+                <p className='text-center'>{n['Author']}</p>
               </div>
               <div className='col-md-10'>
                 <Link to={postPath}>
@@ -60,18 +92,24 @@ class Posts extends Component {
                 Say Something...
               </div>
               <div className='card-body'>
-                <form>
+                <form onSubmit={this.onSubmit}>
                   <div className='form-group'>
                     <textarea
                       className='form-control'
                       rows='1'
                       placeholder='Create the title'
+                      name='title'
+                      value={this.state.title}
+                      onChange={this.onChange}
                     />
                     <br />
                     <textarea
                       className='form-control'
                       rows='5'
                       placeholder='Create a post'
+                      name='content'
+                      value={this.state.content}
+                      onChange={this.onChange}
                     />
                   </div>
                   <button type='submit' className='btn btn-dark'>

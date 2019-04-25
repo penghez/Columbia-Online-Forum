@@ -28,24 +28,6 @@ if (localStorage.currentUserName) {
 // window.location.href = 'login';
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      signedIn: false,
-      userInfo: {}
-    };
-    this.handleSignUp = this.handleSignUp.bind(this);
-  }
-
-  handleSignUp(userInfo) {
-    this.setState({
-      signedIn: true,
-      userInfo: userInfo
-    });
-    console.log(this.state);
-  }
-
   render() {
     return (
       <Provider store={store}>
