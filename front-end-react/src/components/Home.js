@@ -20,8 +20,9 @@ class Home extends Component {
       .catch(err => console.log(err));
 
     axios.get('/forum-post/all').then(res => {
+      // console.log(res);
       const postList = [];
-      for (var i = 0; i < 6; i++) {
+      for (var i = 0; i < Math.min(6, res['data'].length); i++) {
         const postPath = {
           pathname: '/post',
           state: res['data'][i]['PostID']
@@ -31,7 +32,7 @@ class Home extends Component {
             className='list-group-item list-group-item-info single-news'
             key={res['data'][i]['PostID']}>
             <Link className='link-type text-info' to={postPath}>
-              <h4>{res['data'][i]['Title']}</h4>
+              {res['data'][i]['Title']}
             </Link>
           </li>
         );

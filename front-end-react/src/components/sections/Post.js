@@ -9,11 +9,13 @@ class Post extends Component {
 
     this.state = {
       commentElements: [],
+      historyComments: {},
       postBody: {},
       cpContent: '',
       showModal: false,
       rcReplyTo: '',
-      rcContent: ''
+      rcContent: '',
+      rcAuthor: ''
     };
     // Comment on Post
     this.cpChange = this.cpChange.bind(this);
@@ -44,7 +46,7 @@ class Post extends Component {
     const cpBody = {
       Author: localStorage.currentUserName,
       Content: this.state.cpContent,
-      ReplyTo: this.state.postBody['Author']
+      ReplyTo: this.state.postBody['PostID']
     };
 
     axios
@@ -84,7 +86,8 @@ class Post extends Component {
         console.log(res);
         this.setState({
           rcContent: '',
-          rcReplyTo: ''
+          rcReplyTo: '',
+          rcAuthor: ''
         });
         this.getAllPostData();
       })
@@ -94,7 +97,8 @@ class Post extends Component {
   showModal(e) {
     this.setState({
       showModal: true,
-      rcReplyTo: e.target.value
+      rcReplyTo: e.target.value,
+      rcAuthor: this.state.historyComments[e.target.value]['Author']
     });
   }
 
@@ -118,8 +122,21 @@ class Post extends Component {
         // console.log(this.state);
 
         const comments = postBody['Comment'];
+        var historyComments = {};
         const commentElements = [];
         for (let n of comments) {
+          var replyInfo = '';
+
+          if (n['ReplyTo'] in historyComments) {
+            replyInfo = (
+              <p className='text-muted reply-bg'>
+                Reply to: {historyComments[n['ReplyTo']]['Author']}
+                <br />
+                {historyComments[n['ReplyTo']]['Content']}
+              </p>
+            );
+          }
+
           commentElements.push(
             <div className='card card-body mb-3' key={n['PostID']}>
               <div className='row'>
@@ -135,21 +152,27 @@ class Post extends Component {
                   <p className='text-center'>{n['Author']}</p>
                 </div>
                 <div className='col-md-10'>
-                  <p className='text-muted'>Reply to: {n['ReplyTo']}</p>
+                  {replyInfo}
                   <p>{n['Content']}</p>
 
                   <Button
                     variant='secondary'
-                    value={n['Author']}
+                    size='sm'
+                    value={n['PostID']}
                     onClick={this.showModal}>
-                    Reply
+                    Reply to {n['Author']}
                   </Button>
                 </div>
               </div>
             </div>
           );
+
+          historyComments[n['PostID']] = {
+            Author: n['Author'],
+            Content: n['Content']
+          };
         }
-        this.setState({ commentElements });
+        this.setState({ commentElements, historyComments });
       })
       .catch(err => console.log(err));
   }
@@ -189,7 +212,7 @@ class Post extends Component {
 
           <Modal show={this.state.showModal} onHide={this.closeModal}>
             <Modal.Header closeButton>
-              <Modal.Title>Reply to {this.state.rcReplyTo}</Modal.Title>
+              <Modal.Title>Reply to {this.state.rcAuthor}</Modal.Title>
             </Modal.Header>
             <form onSubmit={this.rcSubmit}>
               <Modal.Body>

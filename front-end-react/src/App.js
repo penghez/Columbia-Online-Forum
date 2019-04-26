@@ -34,7 +34,13 @@ class App extends Component {
         <Router>
           <div className='App'>
             <Navbar />
-            <Route exact path='/' component={Landing} />
+            {localStorage.currentUserName && (
+              <Route exact path='/' component={Home} />
+            )}
+            {!localStorage.currentUserName && (
+              <Route exact path='/' component={Landing} />
+            )}
+            {/* <Route exact path='/' component={Landing} /> */}
             <Route exact path='/home' component={Home} />
             <div className='container'>
               <Route exact path='/register' component={Register} />
