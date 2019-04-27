@@ -28,13 +28,13 @@ class Home extends Component {
           state: res['data'][i]['PostID']
         };
         postList.push(
-          <li
-            className='list-group-item list-group-item-info single-news'
-            key={res['data'][i]['PostID']}>
-            <Link className='link-type text-info' to={postPath}>
+          <Link to={postPath}>
+            <li
+              className='list-group-item list-group-item-info single-news text-info'
+              key={res['data'][i]['PostID']}>
               {res['data'][i]['Title']}
-            </Link>
-          </li>
+            </li>
+          </Link>
         );
       }
       this.setState({ postList });

@@ -17,6 +17,7 @@ import Home from './components/Home';
 import Newslist from './components/sections/Newslist';
 import Posts from './components/sections/Posts';
 import Post from './components/sections/Post';
+import Profile from './components/profile/Profile';
 
 import './App.css';
 
@@ -48,6 +49,7 @@ class App extends Component {
               <Route exact path='/newslist' component={Newslist} />
               <Route exact path='/posts' component={Posts} />
               <Route exact path='/post' component={Post} />
+              <Route exact path='/profile' component={Profile} />
             </div>
             <Footer />
           </div>

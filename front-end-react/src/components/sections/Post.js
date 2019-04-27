@@ -129,11 +129,12 @@ class Post extends Component {
 
           if (n['ReplyTo'] in historyComments) {
             replyInfo = (
-              <p className='text-muted reply-bg'>
-                Reply to: {historyComments[n['ReplyTo']]['Author']}
-                <br />
-                {historyComments[n['ReplyTo']]['Content']}
-              </p>
+              <div className='reply-bg col-md-12 '>
+                <p className='text-muted pull-right'>
+                  {historyComments[n['ReplyTo']]['Author']}:
+                  <br />"{historyComments[n['ReplyTo']]['Content']}"
+                </p>
+              </div>
             );
           }
 

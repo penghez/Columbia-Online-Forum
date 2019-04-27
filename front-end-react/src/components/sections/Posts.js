@@ -69,7 +69,7 @@ class Posts extends Component {
                 <p className='text-center'>{n['Author']}</p>
               </div>
               <div className='col-md-10'>
-                <Link to={postPath}>
+                <Link className='link-type' to={postPath}>
                   <p className='lead'>{n['Title']}</p>
                   <p>{n['Content']}</p>
                 </Link>
