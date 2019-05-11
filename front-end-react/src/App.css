@@ -55,12 +55,22 @@ img {
 
 .link-type {
   color: grey;
+  text-align: center;
 }
 
 .link-type:hover {
   background-color: #138852de;
   border-radius: 4px;
   color: darkgrey;
+  text-decoration: none;
+}
+
+.logout {
+  color: darkgrey;
+}
+
+.logout:hover {
+  color: whitesmoke;
   text-decoration: none;
 }
 

@@ -15,7 +15,8 @@ class Profile extends Component {
       fieldOfStudy: '',
       friends: [],
       hobbiesElements: [],
-      friendsElements: []
+      friendsElements: [],
+      alreadyFriend: false
     };
 
     this.getUserInfo = this.getUserInfo.bind(this);
@@ -42,6 +43,10 @@ class Profile extends Component {
         for (let key in userInfo) {
           this.setState({ [key]: userInfo[key] });
         }
+        if (this.state.friends.includes(localStorage.currentUserName)) {
+          this.setState({ alreadyFriend: true });
+        }
+        console.log(this.state);
         this.setHobbiesElements();
         this.setFriendsElements();
       })
@@ -84,6 +89,17 @@ class Profile extends Component {
         friends: this.state.username
       })
       .catch(err => console.log(err));
+
+    axios
+      .post('/forum-user', {
+        username: this.state.username,
+        friends: localStorage.currentUserName
+      })
+      .then(res => {
+        console.log(res);
+        this.getUserInfo();
+      })
+      .catch(err => console.log(err));
   }
 
   render() {
@@ -92,14 +108,26 @@ class Profile extends Component {
     return (
       <div className='row'>
         <div className='col-md-12'>
-          {localStorage.currentUserName !== profileName && (
+          {localStorage.currentUserName !== profileName &&
+            !this.state.alreadyFriend && (
+              <div className='row'>
+                <div className='col-6'>
+                  <button
+                    className='btn btn-light mb-3 float-left'
+                    onClick={this.addFriend}>
+                    Add Friend
+                  </button>
+                </div>
+                <div className='col-6' />
+              </div>
+            )}
+          {localStorage.currentUserName === profileName && (
             <div className='row'>
               <div className='col-6'>
-                <button
-                  className='btn btn-light mb-3 float-left'
-                  onClick={this.addFriend}>
-                  Add Friend
-                </button>
+                {/* Link to edit profile */}
+                <Link to='/myprofile' className='btn btn-light mb-3 float-left'>
+                  Edit Your Profile
+                </Link>
               </div>
               <div className='col-6' />
             </div>

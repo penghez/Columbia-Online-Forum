@@ -12,24 +12,31 @@ class Navbar extends Component {
 
   render() {
     const { isAuthenticated, user } = this.props.auth;
-
+    const currentUserProfile = {
+      pathname: '/profile',
+      state: localStorage.currentUserName
+    };
     const authLinks = (
       <ul className='navbar-nav ml-auto'>
         <li className='nav-item'>
-          <a
-            href='/'
-            onClick={this.onLogoutClick.bind(this)}
-            className='nav-link'>
-            <img
-              className='rounded-circle'
-              src='https://www.gravatar.com/avatar/anything?s=200&d=mm'
-              alt=''
-              title={user.username}
-              style={{ width: '25px', marginRight: '5px' }}
-            />
-            {'  '}
-            Logout
-          </a>
+          <div className='nav-link'>
+            <Link to={currentUserProfile}>
+              <img
+                className='rounded-circle'
+                src='https://www.gravatar.com/avatar/anything?s=200&d=mm'
+                alt=''
+                title={user.username}
+                style={{ width: '25px', marginRight: '5px' }}
+              />
+            </Link>
+            <Link
+              to='/'
+              onClick={this.onLogoutClick.bind(this)}
+              className='logout'>
+              {'  '}
+              Logout
+            </Link>
+          </div>
         </li>
       </ul>
     );

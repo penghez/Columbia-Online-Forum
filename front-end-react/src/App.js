@@ -18,6 +18,7 @@ import Newslist from './components/sections/Newslist';
 import Posts from './components/sections/Posts';
 import Post from './components/sections/Post';
 import Profile from './components/profile/Profile';
+import MyProfile from './components/profile/MyProfile';
 
 import './App.css';
 
@@ -50,6 +51,7 @@ class App extends Component {
               <Route exact path='/posts' component={Posts} />
               <Route exact path='/post' component={Post} />
               <Route exact path='/profile' component={Profile} />
+              <Route exact path='/myprofile' component={MyProfile} />
             </div>
             <Footer />
           </div>
