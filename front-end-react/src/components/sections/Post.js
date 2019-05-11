@@ -138,11 +138,16 @@ class Post extends Component {
             );
           }
 
+          const profileParam = {
+            pathname: '/profile',
+            state: n['Author']
+          };
+
           commentElements.push(
             <div className='card card-body mb-3' key={n['PostID']}>
               <div className='row'>
                 <div className='col-md-2'>
-                  <Link to='/'>
+                  <Link to={profileParam}>
                     <img
                       className='rounded-circle d-none d-md-block'
                       src='https://www.gravatar.com/avatar/anything?s=200&d=mm'

@@ -44,11 +44,13 @@ img {
 }
 
 .single-news:hover {
-  -webkit-transform: rotate(-5deg);
+  /* -webkit-transform: rotate(-5deg);
   -moz-transform: rotate(-5deg);
   -o-transform: rotate(-5deg);
   transform: rotate(-5deg);
-  border-radius: 4px;
+  border-radius: 4px; */
+  transform: scale(1.1);
+  text-decoration: none;
 }
 
 .link-type {
@@ -58,7 +60,7 @@ img {
 .link-type:hover {
   background-color: #138852de;
   border-radius: 4px;
-  color: grey;
+  color: darkgrey;
   text-decoration: none;
 }
 

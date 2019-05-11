@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { Auth } from 'aws-amplify';
+// import { Auth } from 'aws-amplify';
 
 class Home extends Component {
   constructor() {
@@ -15,9 +15,9 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    Auth.currentAuthenticatedUser()
-      .then(res => console.log(res))
-      .catch(err => console.log(err));
+    // Auth.currentAuthenticatedUser()
+    //   .then(res => console.log(res))
+    //   .catch(err => console.log(err));
 
     axios.get('/forum-post/all').then(res => {
       // console.log(res);
@@ -28,10 +28,11 @@ class Home extends Component {
           state: res['data'][i]['PostID']
         };
         postList.push(
-          <Link to={postPath}>
-            <li
-              className='list-group-item list-group-item-info single-news text-info'
-              key={res['data'][i]['PostID']}>
+          <Link
+            to={postPath}
+            className=' single-news'
+            key={res['data'][i]['PostID']}>
+            <li className='list-group-item list-group-item-info text-info'>
               {res['data'][i]['Title']}
             </li>
           </Link>
