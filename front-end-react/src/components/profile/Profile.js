@@ -32,11 +32,14 @@ class Profile extends Component {
   getUserInfo() {
     const profileUserName = this.props.location.state;
     axios
-      .get('/forum-user', {
-        params: {
-          username: profileUserName
+      .get(
+        'https://pfuel2ck1b.execute-api.us-east-2.amazonaws.com/api/forum-user',
+        {
+          params: {
+            username: profileUserName
+          }
         }
-      })
+      )
       .then(res => {
         console.log(res.data);
         const userInfo = res.data;
@@ -84,17 +87,23 @@ class Profile extends Component {
     e.preventDefault();
 
     axios
-      .post('/forum-user', {
-        username: localStorage.currentUserName,
-        friends: this.state.username
-      })
+      .post(
+        'https://pfuel2ck1b.execute-api.us-east-2.amazonaws.com/api/forum-user',
+        {
+          username: localStorage.currentUserName,
+          friends: this.state.username
+        }
+      )
       .catch(err => console.log(err));
 
     axios
-      .post('/forum-user', {
-        username: this.state.username,
-        friends: localStorage.currentUserName
-      })
+      .post(
+        'https://pfuel2ck1b.execute-api.us-east-2.amazonaws.com/api/forum-user',
+        {
+          username: this.state.username,
+          friends: localStorage.currentUserName
+        }
+      )
       .then(res => {
         console.log(res);
         this.getUserInfo();

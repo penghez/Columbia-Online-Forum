@@ -9,7 +9,11 @@ class JobHunting extends Component {
 
     this.state = {
       conversationWithBot: '',
-      respListItem: [],
+      respListItem: [
+        <li className='list-group-item' key='default'>
+          Try typing "Job" to the bot
+        </li>
+      ],
       showModal: false,
       modalContent: ''
     };
@@ -102,8 +106,15 @@ class JobHunting extends Component {
           });
         } else {
           this.state.respListItem.push(
+            <li
+              className='list-group-item list-group-item-secondary'
+              key={this.state.conversationWithBot}>
+              <div className='text-right'>{this.state.conversationWithBot}</div>
+            </li>
+          );
+
+          this.state.respListItem.push(
             <li className='list-group-item' key={botResp}>
-              <p className='text-muted'>{this.state.conversationWithBot}</p>
               {botResp}
             </li>
           );

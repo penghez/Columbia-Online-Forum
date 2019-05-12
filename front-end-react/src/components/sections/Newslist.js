@@ -24,7 +24,9 @@ class Newslist extends Component {
 
   getAllNews() {
     axios
-      .get('/news-feed')
+      .get(
+        'https://pfuel2ck1b.execute-api.us-east-2.amazonaws.com/api/news-feed'
+      )
       .then(res => {
         const newsList = res.data;
         const keywords = this.getAllKeywords(newsList);

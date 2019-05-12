@@ -28,11 +28,14 @@ class MyProfile extends Component {
 
   getProfile() {
     axios
-      .get('/forum-user', {
-        params: {
-          username: this.state.username
+      .get(
+        'https://pfuel2ck1b.execute-api.us-east-2.amazonaws.com/api/forum-user',
+        {
+          params: {
+            username: this.state.username
+          }
         }
-      })
+      )
       .then(res => {
         console.log(res.data);
         const userInfo = res.data;
@@ -56,7 +59,10 @@ class MyProfile extends Component {
     e.preventDefault();
 
     axios
-      .post('/forum-user', this.state)
+      .post(
+        'https://pfuel2ck1b.execute-api.us-east-2.amazonaws.com/api/forum-user',
+        this.state
+      )
       .then(res => {
         const myProfileParam = {
           pathname: '/profile',

@@ -50,10 +50,13 @@ class Post extends Component {
     };
 
     axios
-      .post('/forum-post/comment', {
-        PostID: this.state.postBody['PostID'],
-        Comment: cpBody
-      })
+      .post(
+        'https://pfuel2ck1b.execute-api.us-east-2.amazonaws.com/api/forum-post/comment',
+        {
+          PostID: this.state.postBody['PostID'],
+          Comment: cpBody
+        }
+      )
       .then(res => {
         console.log(res);
         this.setState({
@@ -78,10 +81,13 @@ class Post extends Component {
     };
 
     axios
-      .post('/forum-post/comment', {
-        PostID: this.state.postBody['PostID'],
-        Comment: rcBody
-      })
+      .post(
+        'https://pfuel2ck1b.execute-api.us-east-2.amazonaws.com/api/forum-post/comment',
+        {
+          PostID: this.state.postBody['PostID'],
+          Comment: rcBody
+        }
+      )
       .then(res => {
         console.log(res);
         this.setState({
@@ -111,11 +117,14 @@ class Post extends Component {
     // console.log(currentPostID);
 
     axios
-      .get('/forum-post', {
-        params: {
-          PostID: currentPostID
+      .get(
+        'https://pfuel2ck1b.execute-api.us-east-2.amazonaws.com/api/forum-post',
+        {
+          params: {
+            PostID: currentPostID
+          }
         }
-      })
+      )
       .then(res => {
         const postBody = res['data'];
         this.setState({ postBody });

@@ -28,11 +28,14 @@ class Posts extends Component {
     e.preventDefault();
 
     axios
-      .post('/forum-post', {
-        Title: this.state.title,
-        Content: this.state.content,
-        Author: localStorage.currentUserName
-      })
+      .post(
+        'https://pfuel2ck1b.execute-api.us-east-2.amazonaws.com/api/forum-post',
+        {
+          Title: this.state.title,
+          Content: this.state.content,
+          Author: localStorage.currentUserName
+        }
+      )
       .then(res => {
         console.log(res);
         this.setState({
@@ -45,45 +48,49 @@ class Posts extends Component {
   }
 
   getAllPosts() {
-    axios.get('/forum-post/all').then(res => {
-      const postsContent = res['data'];
+    axios
+      .get(
+        'https://pfuel2ck1b.execute-api.us-east-2.amazonaws.com/api/forum-post/all'
+      )
+      .then(res => {
+        const postsContent = res['data'];
 
-      const postsContentElements = [];
-      for (let n of postsContent) {
-        const postPath = {
-          pathname: '/post',
-          state: n['PostID']
-        };
-        const userImg =
-          'https://s3.amazonaws.com/columbia-forum/userImg/' +
-          n['Author'] +
-          '.png';
-        postsContentElements.push(
-          <div className='card card-body mb-3' key={n['PostID']}>
-            <div className='row'>
-              <div className='col-md-2'>
-                <Link to={postPath}>
-                  <img
-                    className='rounded-circle d-none d-md-block'
-                    alt=''
-                    src={userImg}
-                  />
-                </Link>
-                <br />
-                <p className='text-center'>{n['Author']}</p>
-              </div>
-              <div className='col-md-10'>
-                <Link className='link-type' to={postPath}>
-                  <p className='lead'>{n['Title']}</p>
-                  <p>{n['Content']}</p>
-                </Link>
+        const postsContentElements = [];
+        for (let n of postsContent) {
+          const postPath = {
+            pathname: '/post',
+            state: n['PostID']
+          };
+          const userImg =
+            'https://s3.amazonaws.com/columbia-forum/userImg/' +
+            n['Author'] +
+            '.png';
+          postsContentElements.push(
+            <div className='card card-body mb-3' key={n['PostID']}>
+              <div className='row'>
+                <div className='col-md-2'>
+                  <Link to={postPath}>
+                    <img
+                      className='rounded-circle d-none d-md-block'
+                      alt=''
+                      src={userImg}
+                    />
+                  </Link>
+                  <br />
+                  <p className='text-center'>{n['Author']}</p>
+                </div>
+                <div className='col-md-10'>
+                  <Link className='link-type' to={postPath}>
+                    <p className='lead'>{n['Title']}</p>
+                    <p>{n['Content']}</p>
+                  </Link>
+                </div>
               </div>
             </div>
-          </div>
-        );
-      }
-      this.setState({ postsContentElements });
-    });
+          );
+        }
+        this.setState({ postsContentElements });
+      });
   }
 
   render() {

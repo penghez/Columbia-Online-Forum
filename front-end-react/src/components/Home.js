@@ -72,27 +72,31 @@ class Home extends Component {
   }
 
   setPostList() {
-    axios.get('/forum-post/all').then(res => {
-      // console.log(res);
-      const postList = [];
-      for (var i = 0; i < Math.min(6, res['data'].length); i++) {
-        const postPath = {
-          pathname: '/post',
-          state: res['data'][i]['PostID']
-        };
-        postList.push(
-          <Link
-            to={postPath}
-            className=' single-news'
-            key={res['data'][i]['PostID']}>
-            <li className='list-group-item list-group-item-info text-info'>
-              {res['data'][i]['Title']}
-            </li>
-          </Link>
-        );
-      }
-      this.setState({ postList });
-    });
+    axios
+      .get(
+        'https://pfuel2ck1b.execute-api.us-east-2.amazonaws.com/api/forum-post/all'
+      )
+      .then(res => {
+        // console.log(res);
+        const postList = [];
+        for (var i = 0; i < Math.min(6, res['data'].length); i++) {
+          const postPath = {
+            pathname: '/post',
+            state: res['data'][i]['PostID']
+          };
+          postList.push(
+            <Link
+              to={postPath}
+              className=' single-news'
+              key={res['data'][i]['PostID']}>
+              <li className='list-group-item list-group-item-info text-info'>
+                {res['data'][i]['Title']}
+              </li>
+            </Link>
+          );
+        }
+        this.setState({ postList });
+      });
   }
 
   render() {
