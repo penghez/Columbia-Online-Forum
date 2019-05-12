@@ -54,6 +54,10 @@ class Posts extends Component {
           pathname: '/post',
           state: n['PostID']
         };
+        const userImg =
+          'https://s3.amazonaws.com/columbia-forum/userImg/' +
+          n['Author'] +
+          '.png';
         postsContentElements.push(
           <div className='card card-body mb-3' key={n['PostID']}>
             <div className='row'>
@@ -62,7 +66,7 @@ class Posts extends Component {
                   <img
                     className='rounded-circle d-none d-md-block'
                     alt=''
-                    src='https://www.gravatar.com/avatar/anything?s=200&d=mm'
+                    src={userImg}
                   />
                 </Link>
                 <br />

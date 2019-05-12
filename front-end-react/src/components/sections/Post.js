@@ -142,7 +142,10 @@ class Post extends Component {
             pathname: '/profile',
             state: n['Author']
           };
-
+          const authorImg =
+            'https://s3.amazonaws.com/columbia-forum/userImg/' +
+            n['Author'] +
+            '.png';
           commentElements.push(
             <div className='card card-body mb-3' key={n['PostID']}>
               <div className='row'>
@@ -150,7 +153,7 @@ class Post extends Component {
                   <Link to={profileParam}>
                     <img
                       className='rounded-circle d-none d-md-block'
-                      src='https://www.gravatar.com/avatar/anything?s=200&d=mm'
+                      src={authorImg}
                       alt=''
                     />
                   </Link>
@@ -188,6 +191,10 @@ class Post extends Component {
       pathname: '/profile',
       state: this.state.postBody['Author']
     };
+    const userImg =
+      'https://s3.amazonaws.com/columbia-forum/userImg/' +
+      this.state.postBody['Author'] +
+      '.png';
 
     return (
       <div className='row'>
@@ -201,7 +208,7 @@ class Post extends Component {
                 <Link to={postUserParam}>
                   <img
                     className='rounded-circle d-none d-md-block'
-                    src='https://www.gravatar.com/avatar/anything?s=200&d=mm'
+                    src={userImg}
                     alt=''
                   />
                 </Link>

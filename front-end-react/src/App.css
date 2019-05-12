@@ -82,3 +82,13 @@ img {
   background-color: rgba(245, 245, 245, 0.836);
   border-radius: 6px;
 }
+
+.scroll-item {
+  height: 560px;
+  overflow: auto;
+}
+
+.topic-tag {
+  height: 510px;
+  overflow: auto;
+}

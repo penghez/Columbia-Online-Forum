@@ -16,6 +16,10 @@ class Navbar extends Component {
       pathname: '/profile',
       state: localStorage.currentUserName
     };
+    const userImg =
+      'https://s3.amazonaws.com/columbia-forum/userImg/' +
+      user.username +
+      '.png';
     const authLinks = (
       <ul className='navbar-nav ml-auto'>
         <li className='nav-item'>
@@ -23,7 +27,7 @@ class Navbar extends Component {
             <Link to={currentUserProfile}>
               <img
                 className='rounded-circle'
-                src='https://www.gravatar.com/avatar/anything?s=200&d=mm'
+                src={userImg}
                 alt=''
                 title={user.username}
                 style={{ width: '25px', marginRight: '5px' }}
@@ -76,7 +80,6 @@ class Navbar extends Component {
                 <li className='nav-item'>
                   <Link className='nav-link' to='/profiles'>
                     {' '}
-                    Friends{' '}
                   </Link>
                 </li>
               </ul>

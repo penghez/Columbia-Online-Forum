@@ -104,6 +104,10 @@ class Profile extends Component {
 
   render() {
     const profileName = this.state.username;
+    const userImg =
+      'https://s3.amazonaws.com/columbia-forum/userImg/' +
+      this.state.username +
+      '.png';
 
     return (
       <div className='row'>
@@ -137,7 +141,7 @@ class Profile extends Component {
               <div className='card card-body bg-info text-white mb-3'>
                 <div className='row'>
                   <div className='col-4 col-md-3 m-auto'>
-                    <img className='rounded-circle' src='' alt='' />
+                    <img className='rounded-circle' src={userImg} alt='' />
                   </div>
                 </div>
                 <div className='text-center'>

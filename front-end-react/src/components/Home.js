@@ -12,13 +12,66 @@ class Home extends Component {
       postList: [],
       jobList: []
     };
+
+    this.setPostList = this.setPostList.bind(this);
+    this.setNewsList = this.setNewsList.bind(this);
+    this.setJobList = this.setJobList.bind(this);
   }
 
   componentDidMount() {
     // Auth.currentAuthenticatedUser()
     //   .then(res => console.log(res))
     //   .catch(err => console.log(err));
+    this.setPostList();
+    this.setJobList();
+    this.setNewsList();
+  }
 
+  setNewsList() {
+    const news = [
+      'CNN',
+      'NY-times',
+      'The Guardian',
+      'Google News',
+      'Medium',
+      'Bloomberg'
+    ];
+    const newsList = [];
+    for (var i = 0; i < 6; i++) {
+      newsList.push(
+        <div className='single-news'>
+          <li className='list-group-item list-group-item-info text-info'>
+            {news[i]}
+          </li>
+        </div>
+      );
+    }
+    this.setState({ newsList });
+  }
+
+  setJobList() {
+    const jobs = [
+      'Indeed',
+      'Linkedin',
+      'Handshake',
+      'Glassdoor',
+      'ZipRecruiter',
+      'Craiglist'
+    ];
+    const jobList = [];
+    for (var i = 0; i < 6; i++) {
+      jobList.push(
+        <div className='single-news'>
+          <li className='list-group-item list-group-item-info text-info'>
+            {jobs[i]}
+          </li>
+        </div>
+      );
+    }
+    this.setState({ jobList });
+  }
+
+  setPostList() {
     axios.get('/forum-post/all').then(res => {
       // console.log(res);
       const postList = [];
@@ -51,7 +104,7 @@ class Home extends Component {
               <div className='col-md-4'>
                 <h3 className='text-center text-muted'>
                   <Link className='link-type' to='/newslist'>
-                    Columbia News
+                    News Feed
                   </Link>
                 </h3>
                 <br />
@@ -68,7 +121,7 @@ class Home extends Component {
               </div>
               <div className='col-md-4'>
                 <h3 className='text-center text-muted'>
-                  <Link className='link-type' to='/'>
+                  <Link className='link-type' to='/jobhunting'>
                     Job Hunting
                   </Link>
                 </h3>
