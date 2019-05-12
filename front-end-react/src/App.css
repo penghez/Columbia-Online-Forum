@@ -7,7 +7,7 @@ img {
   background: url('./img/showcase.jpg') no-repeat;
   background-size: cover;
   background-position: center;
-  height: 100vh;
+  height: 85vh;
   margin-top: -24px;
   margin-bottom: -50px;
 }
@@ -55,11 +55,10 @@ img {
 
 .link-type {
   color: grey;
-  text-align: center;
 }
 
 .link-type:hover {
-  background-color: #138852de;
+  background-color: #0f9294;
   border-radius: 4px;
   color: darkgrey;
   text-decoration: none;

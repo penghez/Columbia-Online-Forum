@@ -19,6 +19,7 @@ import Posts from './components/sections/Posts';
 import Post from './components/sections/Post';
 import Profile from './components/profile/Profile';
 import MyProfile from './components/profile/MyProfile';
+import JobHunting from './components/sections/JobHunting';
 
 import './App.css';
 
@@ -52,6 +53,7 @@ class App extends Component {
               <Route exact path='/post' component={Post} />
               <Route exact path='/profile' component={Profile} />
               <Route exact path='/myprofile' component={MyProfile} />
+              <Route exact path='/jobhunting' component={JobHunting} />
             </div>
             <Footer />
           </div>

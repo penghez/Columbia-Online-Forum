@@ -184,6 +184,11 @@ class Post extends Component {
   }
 
   render() {
+    const postUserParam = {
+      pathname: '/profile',
+      state: this.state.postBody['Author']
+    };
+
     return (
       <div className='row'>
         <div className='col-md-12'>
@@ -193,7 +198,7 @@ class Post extends Component {
           <div className='card card-body mb-3'>
             <div className='row'>
               <div className='col-md-2'>
-                <Link to='/home'>
+                <Link to={postUserParam}>
                   <img
                     className='rounded-circle d-none d-md-block'
                     src='https://www.gravatar.com/avatar/anything?s=200&d=mm'
