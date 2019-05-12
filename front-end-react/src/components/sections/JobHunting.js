@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Modal } from 'react-bootstrap';
+import Spinner from 'react-spinkit';
 
 class JobHunting extends Component {
   constructor() {
@@ -17,19 +18,23 @@ class JobHunting extends Component {
     this.sendQuestionToBot = this.sendQuestionToBot.bind(this);
     this.showModal = this.showModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
+    this.openJobLink = this.openJobLink.bind(this);
   }
 
   showModal() {
-    this.setState({
-      showModal: true
-    });
+    this.setState({ showModal: true });
   }
 
   closeModal() {
     this.setState({ showModal: false });
   }
+
   sendBoxChange(e) {
     this.setState({ [e.target.name]: e.target.value });
+  }
+
+  openJobLink(url) {
+    window.open(url);
   }
 
   sendQuestionToBot(e) {
@@ -37,7 +42,20 @@ class JobHunting extends Component {
 
     if (this.state.conversationWithBot.toLowerCase() === 'yes') {
       this.setState({
-        modalContent: `Waiting for the crawler's result... May take about one minute...`
+        modalContent: (
+          <div className='text-center'>
+            <h4>
+              Waiting for the crawler's result... May take about one minute...
+            </h4>
+            <div className='row'>
+              <div className='col-md-5' />
+              <div className='col-md-3'>
+                <Spinner name='pacman' />
+              </div>
+              <div className='col-md-4' />
+            </div>
+          </div>
+        )
       });
       this.showModal();
     }
@@ -57,24 +75,25 @@ class JobHunting extends Component {
           // TODO: LINK TYPE
           for (let i in botResp) {
             jobContentList.push(
-              <a href={botResp[i]['Link']}>
-                <tr className='single-news'>
-                  <td>{botResp[i]['Title']}</td>
-                  <td>{botResp[i]['Company']}</td>
-                  <td>{botResp[i]['Location']}</td>
-                </tr>
-              </a>
+              <tr
+                className='job-item'
+                key={i}
+                onClick={this.openJobLink.bind(this, botResp[i]['Link'])}>
+                <td>{botResp[i]['Title']}</td>
+                <td>{botResp[i]['Company']}</td>
+                <td>{botResp[i]['Location']}</td>
+              </tr>
             );
           }
 
           this.setState({
             modalContent: (
-              <table className='table'>
+              <table className='table table-hover'>
                 <thead>
                   <tr>
-                    <td>Title</td>
-                    <td>Company</td>
-                    <td>Location</td>
+                    <th>Title</th>
+                    <th>Company</th>
+                    <th>Location</th>
                   </tr>
                 </thead>
                 <tbody>{jobContentList}</tbody>
@@ -147,7 +166,7 @@ class JobHunting extends Component {
           </div>
         </div>
 
-        <Modal show={this.state.showModal} onHide={this.closeModal}>
+        <Modal show={this.state.showModal} onHide={this.closeModal} size='lg'>
           <Modal.Header closeButton>
             <Modal.Title>The Result Jobs for You</Modal.Title>
           </Modal.Header>

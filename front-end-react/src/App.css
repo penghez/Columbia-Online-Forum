@@ -53,6 +53,11 @@ img {
   text-decoration: none;
 }
 
+.job-item:hover {
+  transform: scale(1.05);
+  color: gray;
+  text-decoration: none;
+}
 .link-type {
   color: grey;
 }
