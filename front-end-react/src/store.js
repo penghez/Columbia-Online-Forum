@@ -11,6 +11,7 @@ const store = createStore(
   initialState,
   compose(
     applyMiddleware(...middleware),
+    // If you want to build in production, comment this line
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
   )
 );
