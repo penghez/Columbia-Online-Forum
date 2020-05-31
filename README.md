@@ -10,11 +10,11 @@ Demo url:
 
 _If you don't have redux extension_
 
-> http://columbia-forum-demo-no-redux.s3-website.us-east-1.amazonaws.com/
+> ~http://columbia-forum-demo-no-redux.s3-website.us-east-1.amazonaws.com/~
 
 _If you have redux extension_
 
-> http://columbia-forum-demo.s3-website.us-east-2.amazonaws.com/
+> ~http://columbia-forum-demo.s3-website.us-east-2.amazonaws.com/~
 
 
 
